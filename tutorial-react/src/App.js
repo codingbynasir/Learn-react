@@ -4,15 +4,35 @@ import Send_data from './NinjaSend'
 import FunctionalNinja from './fun_component'
 import Conditional from './condition'
 import AddNinja from './AddNinja'
+import DeleteNinja from './delete_ninja'
 class App extends Component {
 	state={
 		ninjas: [
 		{name: 'Nasir Khan', age:23, id:1},
 		{name: 'Bappy Bhai', age:24, id:2},
-		{name: 'Ratul Bhai', age:25, id:3},
 		{name: 'Sajid Bhai', age:23, id:4}
 		]
 	}
+
+  addNinja=(ninja) => {
+      ninja.id = Math.random();
+      let ninjas = [...this.state.ninjas, ninja];
+      this.setState({
+        ninjas: ninjas
+      })
+  }
+
+  deleteNinja = (id) => {
+    let ninjas=this.state.ninjas.filter(ninja=>{
+      return ninja.id !== id
+    });
+    this.setState({
+      ninjas:ninjas
+    })
+  }
+  componentDidMount(){
+    console.log('Component is mounted');
+  }
   render() {
     return (
       <div className="App">
@@ -25,8 +45,10 @@ class App extends Component {
         <FunctionalNinja ninjas={this.state.ninjas} />
         <h4>Conditional component</h4>
         <Conditional ninjas={this.state.ninjas} />
-        <AddNinja />
-
+        <h4>Form</h4>
+        <AddNinja addNinja={this.addNinja}/>
+        <h4>Delete Ninja</h4>
+        <DeleteNinja deleteNinja={this.deleteNinja} ninjas={this.state.ninjas} />
       </div>
     );
   }
